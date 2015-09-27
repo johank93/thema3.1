@@ -64,7 +64,7 @@ def login(request):
         template_data = {'form': form, 'session': request.session}
         #template_data['google_auth_url'] = google.get_authorization_url()
         #template_data['facebook_auth_url'] = facebook.get_authorization_url()
-    return render(request, 'login.html', template_data)
+        return render(request, 'login.html', template_data)
 
 def logout(request):
     # Delete the 'user logged in' key if it exists.
