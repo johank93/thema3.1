@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block bodyid %}login{% endblock %}
+{% block title %}Inloggen{% endblock %}
+{% block content %}
+<h1>Inloggen</h1><br/>
+Om in te loggen kunt u hieronder uw inloggegevens invoeren. Hebt nog geen inloggegevens dan kunt u zich gratis <a href="{% url 'nrgweb:register' %}">registreren</a>.
+<br/><br/>
+
+<form action="{% url 'nrgweb:login' %}" method="post">
+{% csrf_token %}
+<fieldset class="registration">
+     <legend>Login-gegevens</legend>
+<table>
+{% for field in form %}
+	<tr>
+		<td>
+			{{ field.label_tag }}:
+		</td>
+		<td>
+			{{ field }}
+		</td>
+		<td>{{ field.errors }}
+	</tr>
+{% endfor %}
+</table>
+<input type="submit" class="registration_textbox" value="Login" />
+	
+</fieldset>
+</form>
+
+<fieldset class="">
+    <legend>Login met Facebook/Google</legend>
+<a title="Inloggen met Google"
+   href="{{ google_auth_url }}"
+   style="background: #fff url({% static 'images/openid-logos.png' %}); background-position: -1px -1px"
+   class="icon-google openid_large_btn"></a>
+<a title="Inloggen met Facebook"
+   href="{{ facebook_auth_url }}"
+   style="background: #fff url({% static 'images/openid-logos.png' %}); background-position: -1px -456px"
+   class="icon-facebook openid_large_btn"></a>
+</fieldset>
+
+{% endblock %}

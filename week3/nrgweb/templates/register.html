@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Registreren{% endblock %}
+{% block content %}
+<h1>Registreren</h1>
+
+{% if session.auth_provider == 'google' or session.auth_provider == 'facebook' %}
+<h2>Registratie voor {{ session.auth_provider }} account</h2>
+<p>U heeft ingelogd met uw {{ session.auth_provider }} account.
+Aangezien uw account niet verbonden is aan bestaande gegevens,
+dient u deze alsnog in te vullen. Deze gegevens zijn vervolgens gekoppeld aan uw {{ session.auth_provider }} account.</p>
+{% endif %}
+
+{% if session.auth_provider == 'google' %}
+<form action="{% url 'nrgweb:google_register' %}" method="post">
+{% elif session.auth_provider == 'facebook' %}
+<form action="{% url 'nrgweb:facebook_register' %}" method="post">
+{% else %}
+<form action="{% url 'nrgweb:register' %}" method="post">
+{% endif %}
+{% csrf_token %}
+<fieldset class="registration">
+     <legend>Gegevens huishouding</legend>
+<table>
+{% for field in form %}
+	<tr>
+		<td>
+			{{ field.label_tag }}:
+		</td>
+		<td>
+			{{ field }}
+		</td>
+		<td>{{ field.errors }}
+	</tr>
+{% endfor %}
+</table>
+		<div class="registration_input" >	    
+	        <input type="submit" class="registration_textbox" value="Registreer!" />
+		</div>
+	
+</fieldset>
+</form>
+{% endblock %}

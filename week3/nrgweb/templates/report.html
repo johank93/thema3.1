@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block bodyid %}report{% endblock %}
+{% block title %}Rapporteren{% endblock %}
+{% load staticfiles %}
+{% block headerinclude %}
+<script type="text/javascript" src="{% static "js/graphing.js" %}"></script>
+<script type="text/javascript">
+function compareData() {
+    var postcode = $('#postcode').val();
+    var device_info = $('#device_info').val().split('/');
+    var deviceId = device_info[0];
+    var category = device_info[1];
+    var check_type = $('input[name=avg_type]:checked', '#report_form').val();
+    
+ 	// Get device data url
+   	var url = "{% url 'nrgweb:dev_get' device_id=0 %}".replace(/0$/, deviceId);
+    
+    // Get avg data baseurl
+    var base_url_avg;
+    if (check_type == 'device')
+	    base_url_avg = "{% url 'nrgweb:avg_dev' device_id=0 %}".replace(/0$/, deviceId);
+	else
+	    base_url_avg = "{% url 'nrgweb:avg_cat' category='Fiets' %}".replace(/Fiets$/, category);
+
+
+   	// Should a postcode be added?
+   	var url_avg;
+  	if (typeof postcode == 'string' && postcode.length > 0)
+    	url_avg = base_url_avg + "/" + postcode;
+   	else
+      	url_avg = base_url_avg;
+
+    // Get the data.
+    getData(url, url_avg); // Retrieve data and draw graph
+}
+</script>
+{% endblock %}
+{% block content %}
+<h1>Rapportage energie opwekking</h1><br/>
+<p>Selecteer een apparaatcategorie om te vergelijken en geef een postcodegebied in of geen postcode voor het gehele land.</p>
+<form id="report_form">
+    Apparaat:
+    <select id="device_info">
+    {% for device in deviceList %}
+      <option value="{{ device.1 }}/{{ device.0.categorie_id }}">{{ device.0.merk }} {{ device.0.typenummer }} {{ device.0.categorie_id }}</option>
+    {% endfor %}
+    </select>
+
+    <br/>
+    Gemiddelde voor:
+    <input id="avg_for_device" type="radio" name="avg_type" value="device" checked>
+    <label for="avg_for_device">Apparaat van hetzelfde type</label>
+    <input id="avg_for_category" type="radio" name="avg_type" value="category">
+    <label for="avg_for_category">Apparaat in dezelfde categorie</label>
+
+    <br/>
+    Postcode:<input id="postcode" type="text" class="registration_textbox" value="9000" size="4" maxlength="4" />
+    <input type="button" class="registration_textbox" value="Vergelijk!" onclick="compareData()"/>
+</form>
+<br/><br/>
+
+<div id="holder"></div>
+<p>
+    Created with <a href="http://g.raphaeljs.com/">gRaphaël</a> JavaScript library.
+</p>
+{% endblock %}
+

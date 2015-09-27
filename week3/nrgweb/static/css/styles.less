@@ -1,0 +1,149 @@
+// nrgweb less styles
+
+// Registration page styles
+@registration_fieldset_width: 70%;
+@registration_field_width: 40%;
+@registration_input_width: 60%;
+@registration_caption_color: RoyalBlue;
+@registration_caption_background: orange;
+
+body 
+{ 
+	font-family: lucinda, helvetica; 
+	font-size: 16px; 
+}
+
+body#index a#index,
+body#login a#login,
+body#input a#input_nrg,
+body#inputDevice a#inputDevice,
+body#measurements a#measurements,
+body#report a#report
+{
+	color: white;
+	background: @registration_caption_background;
+}
+
+.left {
+	position: absolute; 
+	left: 20px; 
+	top: 0px; 
+	width: 160px; 
+	height: 100%; 
+	margin-right: 30px;
+	background-color: @registration_caption_color;
+}
+
+#logo {
+	position: absolute;
+	top: 35px; 
+	left: 115px; 
+	width: 200px; 
+	height: 200px;
+}
+
+#ruler {
+	background-color: @registration_caption_background;
+	font-size: 14px; 
+	width: 98%; 
+	height: 20px;
+	top: 80px; 
+	position: absolute;
+	padding-top: 2px;
+	padding-right: 40px;
+	text-align: right;
+	color: @registration_caption_color;
+}
+
+#content {
+	position: absolute;
+	top: 150px; 
+	left: 190px; 
+	width: 85%; 
+	height: 100%;
+}
+
+nav a:hover
+{
+	background-color: @registration_caption_background;
+}
+
+nav a {
+	white-space: nowrap;
+	text-decoration: none;
+	color: white;
+	display: block;
+	width: 140px;
+}
+
+nav ul {
+	list-style-type: none; 
+	padding-top: 200px;
+	padding-left: 10px;
+}
+
+.registration {
+  	width: @registration_fieldset_width;
+}
+
+.registration legend {
+  	color: @registration_caption_color;
+  	background-color: @registration_caption_background;
+}
+
+.registration_field {
+ 	float: left;
+  	width: 20%;
+}
+
+.registration_input {
+  	width: @registration_input_width;
+}
+
+.measurement_table thead {
+    border-bottom: 1px solid white;
+}
+
+.measurement_table tbody {
+    background-color: white;
+    background-color: #709bbf;
+}
+
+.measurement_table {
+    background-color: #709bbf;
+    color: white;
+}
+
+.icon-facebook {
+    background-position: -27px -378px;
+}
+
+.icon-google {
+    background-position: -1px -300px;
+}
+
+.rounded-corners(@radius: 5px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    -ms-border-radius: @radius;
+    -o-border-radius: @radius;
+    border-radius: @radius;
+}
+
+.box-shadow {
+    box-shadow: 2px 2px 4px #ddd;
+    -moz-box-shadow: 2px 2px 4px #ddd;
+    -webkit-box-shadow: 2px 2px 4px #ddd;
+}
+
+.openid_large_btn {
+    width: 100px;
+    height: 60px;
+    border: 2px solid #DDD;
+    border-right: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    margin: 3px;
+    float: left;
+    .rounded-corners;
+    .box-shadow;
+}

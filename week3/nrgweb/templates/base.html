@@ -1,0 +1,45 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}NRGWeb: Al uw energie onder controle!{% endblock %}</title>
+	<link rel="stylesheet/less" type="text/css" href="{% static "css/styles.less" %}" />
+	<script src="{% static "js/less-1.4.1.js" %}" type="text/javascript"></script>
+	<script src="{% static "js/jquery.js" %}" type="text/javascript"></script>
+	<script src="{% static "js/raphael.js" %}" type="text/javascript"></script>
+	<script src="{% static "js/g.raphael.js" %}" type="text/javascript"></script>
+	<script src="{% static "js/g.line.js" %}" type="text/javascript"></script>
+{% block headerinclude %}{% endblock %}
+</head>
+<body id="{% block bodyid %}{% endblock %}" >	
+	
+	<div class="left">		
+	  	<nav>
+	  		<ul class="navlist">
+	  			 <li><a href="{% url 'nrgweb:index' %}" id="index">&nbsp;Start</a></li>
+			     {% if session.logged_in %}
+			     	<li><a href="{% url 'nrgweb:logout' %}" id="logout">&nbsp;Uitloggen</a></li>
+				    <li><a href="{% url 'nrgweb:input' %}" id="input_nrg">&nbsp;NRG invoeren</a></li>
+				    <li><a href="{% url 'nrgweb:device' %}" id="inputDevice">&nbsp;Apparaat invoeren</a></li>
+				    <li><a href="{% url 'nrgweb:report' %}" id="report">&nbsp;Rapporteren</a></li>
+				    <li><a href="{% url 'nrgweb:measurements' %}" id="measurements">&nbsp;Metingen</a></li>
+			     {% else %}
+			     <li><a href="login" id="login">&nbsp;Inloggen</a></li>
+			     {% endif %}
+	    		</ul>
+	   	</nav>
+ 	</div>
+
+  	<div id="ruler">
+  		{% if session.logged_in %}Ingelogd als: {{ session.huishouden.email }}{% endif %}
+  	</div>
+	<div id="logo">
+		<!-- Logo borrowed from http://www.freelanceoffset.com/html/copiers___printers.html and NRG a Ricoh company -->
+		<img src="{% static "images/nrglogo.gif" %}" alt="NRG logo">
+	</div>	
+	<div id="content">
+	{% block content %}
+	{% endblock %}
+	</div>
+</body>
+</html>

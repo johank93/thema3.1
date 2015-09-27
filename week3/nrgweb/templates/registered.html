@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block bodyid %}input{% endblock %}
+{% block title %}Registratie voltooid{% endblock %}
+{% block content %}
+<h1>Registratie voltooid!</h1><br/>
+U kunt nu <a href="{% url 'nrgweb:login' %}">hier</a> inloggen.
+{% endblock %}

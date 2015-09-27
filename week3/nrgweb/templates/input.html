@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block bodyid %}input{% endblock %}
+{% block title %}Invoeren{% endblock %}
+{% block content %}
+	<h1>Energie opwekking invoeren</h1>
+{% if deviceList %}
+	<fieldset class="registration">
+		<legend>Ingevoerde apparaten</legend>
+		<table>
+			<tr>
+				<th>Merk</th><th>Type</th><th>Categorie</th>
+			</tr>
+			{% for device in deviceList %}
+				<tr>
+					<td>		
+					{{ device.0.merk }}
+					</td>
+					<td>		
+					{{ device.0.typenummer }}
+					</td>				
+					<td>		
+					{{ device.0.categorie_id }}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</fieldset>
+	<br/>	
+	<form id="nrginput" action="{% url 'nrgweb:input' %}" method="post">
+		{% csrf_token %}
+		<fieldset class="registration">
+		   	<legend>Invoer meting</legend>
+			<table>
+				{% for field in nrgForm %}	
+				<tr>
+					<td>
+						{{ field.label }}:
+					</td>
+					<td>
+						{{ field }}
+						</td>
+					<td>{{ field.errors }}
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+			<div class="registration_input" >	    
+				<input type="submit" class="registration_textbox" value="Invoeren" />
+			</div>	
+		</fieldset>
+	</form>
+{% else %}
+Er zijn nog geen apparaten ingevoerd. Voer <a href="{% url 'nrgweb:device' %}">hier</a> een nieuw apparaat in.
+{% endif %}
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block header_include %}
+<script>
+
+</script>
+{% endblock %}
+{% block bodyid %}measurements{% endblock %}
+{% block title %}Metingen{% endblock %}
+{% load keyvalue %}
+{% block content %}
+<h1>Overzicht van metingen</h1><br/>
+
+{% if dates %}
+<h2>Selecteer een datum</h2>
+Datum:
+<select name="datum" onchange="if (this.value != '-----------') window.location.href = '{% url 'nrgweb:measurements' %}/' + this.value;">
+        <option value="{{ date }}">-----------</option>
+    {% for date in dates %}
+        <option value="{{ date }}">{{ date }}</option>
+    {% endfor %}
+</select>
+
+{% if measurements %}
+<h2>Metingen voor datum {{ measurement_date }}</h2>
+<table class="measurement_table">
+    <thead>
+        <tr>
+            <th colspan="2" valign="top">Apparaat</th>
+            {% for time in measurements.times %}
+            <th>{{ time.1 }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for device_id, device in measurements.devices.items %}
+        <tr>
+            <th rowspan="2">{{ device.name }}</th>
+            <th>i (kW)</th>
+                {% for time in measurements.times %}
+                <td>{{ device.values|measurement_value:time.1 }}</td>
+                {% endfor %}
+        </tr>
+        <tr>
+            <th>sum(i) (kWh)</th>
+                {% for time in measurements.times %}
+                <td>{{ device.values|measurement_sum_value:time.1 }}</td>
+                {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Geen metingen gevonden voor datum {{ measurement_date }}.
+Voer <a href="{% url 'nrgweb:input' %}">hier</a> een nieuwe meting in.
+</p>
+{% endif %}
+
+{% else %}
+Geen metingen gevonden. Voer <a href="{% url 'nrgweb:input' %}">hier</a> een nieuwe meting in.
+{% endif %}
+{% endblock %}

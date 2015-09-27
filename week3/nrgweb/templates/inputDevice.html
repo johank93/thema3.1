@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block bodyid %}inputDevice{% endblock %}
+{% block title %}Invoeren apparaat{% endblock %}
+{% block content %}
+<h1>Apparaten invoeren</h1>
+
+{% if statusmsg %}
+<h2>Status bericht</h2>
+<p>{{ statusmsg }}</p>
+{% endif %}
+
+<fieldset class="registration">
+    <legend>Ingevoerde apparaten</legend>
+    <table>
+        <tr>
+            <th>Merk</th><th>Type</th><th>Categorie</th>
+        </tr>
+        {% for device in deviceList %}
+        <tr>
+
+        <form id="deleteDevice" action="{% url 'nrgweb:device' %}" method="post">
+        {% csrf_token %}
+            <td>
+            {{ device.0.merk }}
+            </td>
+            <td>
+            {{ device.0.typenummer }}
+            </td>
+            <td>
+            {{ device.0.categorie_id }}
+            </td>
+            <td>
+                <input type="submit" class="registration_textbox" value="Verwijderen" />
+                <input type="hidden" name="deviceId" value="{{ device.1 }}" />
+            </td>
+        </form>
+        </tr>
+
+        {% endfor %}
+
+        <form id="inputDevice" action="{% url 'nrgweb:device' %}" method="post">
+        {% csrf_token %}
+        <tr>
+            {% for field in deviceForm %}
+            <td>
+                {{ field }}
+            </td>
+            {% endfor %}
+            <td>
+                <input type="submit" class="registration_textbox" value="Toevoegen&nbsp;&nbsp;" />
+                <input type="hidden" name="deviceId" value="none" />
+            </td>
+            <td>
+            {{ field.errors }}
+            {{ field.non_field_errors }}
+            </td>
+            </tr>
+
+    </table>
+</fieldset>
+</form>
+
+<br/>
+
+<form id="linkDevice" action="{% url 'nrgweb:device' %}" method="post">
+{% csrf_token %}
+<fieldset class="registration">
+    <legend>Bestaand apparaat selecteren</legend>
+    <table>
+        {% for field in linkForm %}
+        <tr>
+            <td>
+                {{ field.label }}:
+            </td>
+            <td>
+                {{ field }}
+                </td>
+            <td>{{ field.errors }}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <input type="submit" value="Voeg apparaat toe">
+</fieldset>
+</form>
+{% endblock %}
