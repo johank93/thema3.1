@@ -2,11 +2,10 @@ __author__ = 'johan'
 
 from django.db import connection
 import datetime
-from models import Meting, HuishoudenApparaat
+from nrgweb.models import Meting, HuishoudenApparaat
 import json
-import urlparse
-import httplib
-import urllib
+import http.client
+import urllib.request
 
 def get_time_values(values, as_tuple = True, format = '%H:%M'):
     """Get the time values from a list of datetime tuples"""
@@ -30,7 +29,7 @@ def get_measurements_dates(huishouden_id):
 
 def get_measurement_table(_huishouden_id, measurement_date):
     """Generate a measurement table for the given huishouden_id and date"""
-    from models import MetingTijden, Meting
+    from nrgweb.models import MetingTijden, Meting
     # Initialize the measurements table.
     times = get_time_values(MetingTijden.objects.values_list())
     measurements = {
@@ -129,7 +128,7 @@ where
 
 def get_device_list(huishouden_id):
     """Get a list of devices for the given huishouden_id"""
-    from models import HuishoudenApparaat, Apparaat
+    from nrgweb.models import HuishoudenApparaat, Apparaat
     devices = HuishoudenApparaat.objects.filter(huishouden = huishouden_id).values_list()
     deviceList = []
     device = None
@@ -164,15 +163,15 @@ def read_json_file(input_fn):
     return data
 
 def url_get_data(url, params = '', method = "GET"):
-    url_info = urlparse.urlparse(url)
+    url_info = urllib.parse.urlparse(url)
     if url_info.scheme == "https":
-        conn = httplib.HTTPSConnection(url_info.netloc)
+        conn = http.client.HTTPSConnection(url_info.netloc)
     else:
-        conn = httplib.HTTPConnection(url_info.netloc)
+        conn = http.client.HTTPConnection(url_info.netloc)
 
     if isinstance(params, dict):
         # If the params are a dictionary, convert it to a query string
-        path = url_info.path + "?" + urllib.urlencode(params)
+        path = url_info.path + "?" + urllib.parse.urlencode(params)
     else:
         # Otherwise, just assume it's a string.
         path = url_info.path + "?" + params
@@ -188,4 +187,4 @@ def url_get_json(url, params = ''):
     return json.loads(url_get_data(url, params))
 
 def url_get_query_string(url, params = ''):
-    return urlparse.parse_qs(url_get_data(url, params))
+    return urllib.parse.parse_qs(url_get_data(url, params))

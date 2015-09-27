@@ -7,7 +7,7 @@ Created on 25 sep. 2013
 from django import forms
 from nrgweb.models import MetingTijden, Meting, Huishouden, Apparaat, HuishoudenApparaat
 from datetime import date
-from util import get_time_values
+from nrgweb.util import get_time_values
 
 class RegistrationForm(forms.ModelForm):
     password = forms.PasswordInput()

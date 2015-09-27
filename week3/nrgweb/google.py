@@ -3,14 +3,14 @@ __author__ = 'johan'
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 import urllib
-import httplib
+import http.client
 import json
 import os
 import base64
-from util import read_json_file
-from models import GoogleAuth
+from nrgweb.util import read_json_file
+from nrgweb.models import GoogleAuth
 from django.core.urlresolvers import reverse
-from forms import RegistrationForm
+from nrgweb.forms import RegistrationForm
 
 CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), 'google_secrets.json')
 
@@ -24,7 +24,7 @@ def get_authorization_url():
         "scope": "openid email",
         "redirect_uri": auth_params["redirect_uri"],
     }
-    return "https://accounts.google.com/o/oauth2/auth?" + urllib.urlencode(params)
+    return "https://accounts.google.com/o/oauth2/auth?" + urllib.parse.urlencode(params)
 
 def google_auth(request):
     """View handling the google oauth callback"""

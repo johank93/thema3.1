@@ -3,13 +3,13 @@ from nrgweb.util import url_get_json
 __author__ = 'johan'
 
 import os
-from util import read_json_file, url_get_json, url_get_query_string
+from nrgweb.util import read_json_file, url_get_json, url_get_query_string
 import urllib
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
-from models import Huishouden, FacebookAuth
-from forms import RegistrationForm
+from nrgweb.models import Huishouden, FacebookAuth
+from nrgweb.forms import RegistrationForm
 
 # File containing the facebook secrets.
 CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), 'facebook_secrets.json')
@@ -20,7 +20,7 @@ def get_authorization_url():
         "client_id": auth_params["app_id"],
         "redirect_uri": auth_params["redirect_uri"]
     }
-    return "https://www.facebook.com/dialog/oauth?" + urllib.urlencode(params)
+    return "https://www.facebook.com/dialog/oauth?" + urllib.parse.urlencode(params)
 
 def facebook_auth(request):
     """View handling the google oauth callback"""

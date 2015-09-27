@@ -5,14 +5,14 @@ Created on 24 sep. 2013
 '''
 
 from django.shortcuts import render
-from forms import RegistrationForm, LoginForm, NrgInputForm, DeviceInputForm, DeviceLinkForm
+from nrgweb.forms import RegistrationForm, LoginForm, NrgInputForm, DeviceInputForm, DeviceLinkForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from models import Huishouden, HuishoudenApparaat, Apparaat, MetingTijden, Meting
-from util import *
+from nrgweb.models import Huishouden, HuishoudenApparaat, Apparaat, MetingTijden, Meting
+from nrgweb.util import *
 import json
-import google
-import facebook
+import nrgweb.google
+import nrgweb.facebook
 
 def index(request):
     """Main view"""
@@ -210,7 +210,7 @@ def measurements(request, measurement_date=None):
 
     # Find all measurements for the given date.
     if len(dates) > 0:
-        from util import get_measurement_table
+        from nrgweb.util import get_measurement_table
         measurements = get_measurement_table(request.session['huishouden'].huishouden_id,
                                                               measurement_date)
         if measurements is not None:
