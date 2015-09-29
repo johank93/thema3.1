@@ -7,7 +7,7 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
         <li><a href="?p=registreren">Registreren</a></li>
-        <li><a href="#">Apperaatbeheer</a></li>
+        <li><a href="?p=apparaat">Apperaatbeheer</a></li>
         <li><a href="#">Overzicht</a></li>
       </ul>
     </div>

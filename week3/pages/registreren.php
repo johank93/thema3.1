@@ -48,6 +48,11 @@ if(!empty($_POST)) {
 			echo "</div>";
                         
                         echo "<b></b>";
+                        
+                        $_SESSION['email'] = $_POST['email'];
+                        
+                        header('Location: ?p=apparaat');
+                        
 		}
 	}
 
@@ -91,7 +96,7 @@ if(!empty($_POST)) {
        
        <tr>
         <td>Wachtwoord</td>
-        <td><input type="password" class="form-control" name="passwd" size="20" value="<?php if(isset($_POST['passwd'])) {echo $_POST['passwd'];}?>"></td>
+        <td><input type="password" class="form-control" name="passwd" size="20"></td>
        </tr>
        
        </table>
