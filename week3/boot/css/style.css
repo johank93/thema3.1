@@ -1,0 +1,14 @@
+.container {
+    margin-left: 5%;
+}
+
+.navbar-inverse {
+    background-color: #00BC8C;
+    border-color: #555;
+}
+
+.navbar-inverse .navbar-collapse,
+.navbar-inverse .navbar-form {
+    border-color: #555;
+}
+
