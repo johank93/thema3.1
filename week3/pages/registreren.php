@@ -1,10 +1,7 @@
 <?php
+require('inc/connection.php');
+$con = $GLOBALS['con'];
 
-    $con = mysqli_connect('localhost','root','','nrg');
-
-    if (!$con) {
-        die('Could not connect: ' . mysqli_error($con));
-    }
 
 if(!empty($_POST)) {
 

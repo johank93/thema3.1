@@ -2,12 +2,19 @@
 require('inc/connection.php');
 $con = $GLOBALS['con'];
 
-    if (isset($_SESSION['email'])) {
+if (isset($_SESSION['email'])) {
         $email = $_SESSION['email'];
         $huishoudenidsql = "SELECT id FROM huishouden WHERE email = '$email'";
         
         $huishoudenid = mysqli_query($con, $huishoudenidsql);
+        while($row = mysqli_fetch_assoc($huishoudenid)) {
+            $valicationchecksql = "SELECT * FROM apparaat_huishouden WHERE apparaat_fk = $_GET[id] AND huishouden_fk = $row[id]";
+        }
         
+        $valicationcheck = mysqli_query($con,$valicationchecksql);
+        
+        if(mysqli_num_rows($valicationcheck) >= 1){
+            
         if(!empty($_POST)) {
 
             //Controle of alles is ingevuld
@@ -48,30 +55,29 @@ $con = $GLOBALS['con'];
                     echo "<b></b>";
 
             }
-    }              
+    }           
+        
 ?>
 <form class="form-horizontal" action="" method="POST">
     <fieldset>
-           <legend>Apparaat toevoegen</legend>
+           <legend>Meting toevoegen</legend>
     
-        <div class="form-group">
-                <label class="col-sm-1 control-label" for="naam">* Naam:</label>
-                <div class="col-sm-2">
-                    <input type="text" class="form-control" name="naam" value="<?php if(!empty($_POST)) {echo $_POST['naam']; }?>" />
-                </div>
-        </div>
-        <div class="form-group">
-                <label class="col-sm-1 control-label" for="merk">* Merk:</label>
-                <div class="col-sm-2">
-                    <input type="text" class="form-control" name="merk" value="<?php if(!empty($_POST)) {echo $_POST['merk']; }?>" />
-                </div>
-        </div>
-        <div class="form-group">
-                <label class="col-sm-1 control-label" for="type">* Type:</label>
-                <div class="col-sm-2">
-                    <input type="text" class="form-control" name="type" value="<?php if(!empty($_POST)) {echo $_POST['type']; }?>" />
-                </div>
-        </div>   
+           <?php
+                for($i = 0; $i < 24;$i++) {
+                    $time = sprintf("%02d", $i);
+                    
+                    echo '<div class="form-group">';
+                    echo '<label class="col-sm-1 control-label" for="'.$time.'">'.$time.':00</label>';
+                    echo '<div class="col-sm-2">';
+                    echo '<input type="text" class="form-control" name="'.$time.'" value=""/>';
+                    echo '</div>';
+                    echo '<div class="col-sm-2">';
+                    echo 'Kw';
+                    echo '</div>';
+                    echo '</div>';
+                }
+           
+           ?> 
         <div class="control-group">
                 <div class="controls">
                     <br>
@@ -85,6 +91,7 @@ $con = $GLOBALS['con'];
 
 
 <?php
+        }
     }else{
         header('Location: ?p=registreren'); 
         echo "nosession";

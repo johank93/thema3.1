@@ -1,9 +1,6 @@
 <?php
-$con = mysqli_connect('localhost','root','','nrg');
-
-    if (!$con) {
-        die('Could not connect: ' . mysqli_error($con));
-    }
+require('inc/connection.php');
+$con = $GLOBALS['con'];
 
 $_SESSION['email'] = "fabiangroenewold@gmail.com";
     	if (isset($_SESSION['email'])) {
@@ -27,7 +24,7 @@ $_SESSION['email'] = "fabiangroenewold@gmail.com";
 		<?php
                 
                     while($row = mysqli_fetch_assoc($huishoudenid)) {
-                        $sql = "SELECT * FROM apparaat 
+                        $sql = "SELECT apparaat.id AS id, naam, type, merk FROM apparaat 
                                 LEFT JOIN apparaat_huishouden
                                 ON apparaat.id = apparaat_huishouden.apparaat_fk
                                 WHERE apparaat_huishouden.huishouden_fk = $row[id]
@@ -38,7 +35,7 @@ $_SESSION['email'] = "fabiangroenewold@gmail.com";
                         while($row = mysqli_fetch_assoc($res)) {
 
                             echo"<tr>";
-                                echo"<td>".$row['naam']."</td>";
+                                echo"<td><a href='?p=apparaat_meting&id=".$row['id']."'>".$row['naam']."</a></td>";
                                 echo"<td>".$row['merk']."</td>";
                                 echo"<td>".$row['type']."</td>";
                             echo"</tr>";
