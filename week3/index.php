@@ -24,6 +24,17 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- jQuery Version 1.11.1 -->
+    <script src="boot/js/jquery.js"></script>
+    
+    <!-- Bootstrap Core JavaScript -->
+    <script src="boot/js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript" src="js/MooTools-Core-1.5.2.js"></script>
+    
+    <script src="js/Chart.js"></script>
+    <script src="js/Chart.Line.js"></script>
+
 </head>
 
 <body>
@@ -38,12 +49,6 @@
 
     </div>
     <!-- /.container -->
-
-    <!-- jQuery Version 1.11.1 -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
 
 </body>
 

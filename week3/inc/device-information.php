@@ -10,7 +10,7 @@ if (isset($_GET['device']) && isset($_GET['comparison_type']) && isset($_GET['re
     // SELECT tables
     $sql .= " FROM meting "
             . "INNER JOIN apparaat_huishouden ON meting.app_hh = apparaat_huishouden.id "
-            . "INNER JOIN apparaat ON apparaat_huishouden.apparaat_fk = apparaat.id"
+            . "INNER JOIN apparaat ON apparaat_huishouden.apparaat_fk = apparaat.id "
             . "INNER JOIN huishouden ON huishouden.id = apparaat_huishouden.huishouden_fk "
             . "INNER JOIN postcode ON huishouden.postcode = postcode.postcode";
 
