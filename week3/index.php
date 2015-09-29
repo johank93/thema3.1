@@ -1,3 +1,5 @@
+<?php  include 'inc/functions.php'; //include 'inc/connect.php';  error_reporting(0); //session_start();  ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,36 +29,12 @@
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">WebSiteName</a>
-    </div>
-    <div>
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Page 1</a></li>
-        <li><a href="#">Page 2</a></li>
-        <li><a href="#">Page 3</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<?php include 'inc/navbar.php'; ?>
 
     <!-- Page Content -->
     <div class="container">
-
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>A Bootstrap Starter Template</h1>
-                <p class="lead">Complete with pre-defined file paths that you won't have to change!</p>
-                <ul class="list-unstyled">
-                    <li>Bootstrap v3.3.1</li>
-                    <li>jQuery v1.11.1</li>
-                </ul>
-            </div>
-        </div>
-        <!-- /.row -->
+        <!--Content pageload-->
+        <?php pageload(); ?>
 
     </div>
     <!-- /.container -->
