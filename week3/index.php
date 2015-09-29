@@ -1,13 +1,4 @@
-<?php  include 'inc/functions.php';  //error_reporting(0); //session_start();  
-
-    $con = mysqli_connect('localhost','root','','nrg');
-
-    if (!$con) {
-        die('Could not connect: ' . mysqli_error($con));
-    }
-    
-
-?>
+<?php  include 'inc/functions.php';  //error_reporting(0); //session_start(); ?>
 
 <!DOCTYPE html>
 <html lang="en">
