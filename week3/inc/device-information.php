@@ -10,7 +10,9 @@ if (isset($_GET['device']) && isset($_GET['comparison_type']) && isset($_GET['re
     // SELECT tables
     $sql .= " FROM meting "
             . "INNER JOIN apparaat_huishouden ON meting.app_hh = apparaat_huishouden.id "
-            . "INNER JOIN apparaat ON apparaat_huishouden.apparaat_fk = apparaat.id";
+            . "INNER JOIN apparaat ON apparaat_huishouden.apparaat_fk = apparaat.id"
+            . "INNER JOIN huishouden ON huishouden.id = apparaat_huishouden.huishouden_fk "
+            . "INNER JOIN postcode ON huishouden.postcode = postcode.postcode";
 
     // device number of the household
     $device = $_GET['device'];
@@ -27,9 +29,13 @@ if (isset($_GET['device']) && isset($_GET['comparison_type']) && isset($_GET['re
     $region_type = $_GET['region_type'];
     if ($region_type == "1") {
         // search on zipcode
+        // TODO: Replace with current household zipcode
+        $sql .= " AND huishouden.postcode = '9501AL'";
     }
     else if ($region_type == "2") {
         // search on county
+        // TODO: Replace with current household county
+        $sql .= " AND postcode.province_code = 'GR'";
     }
     
     // GROUP BY
