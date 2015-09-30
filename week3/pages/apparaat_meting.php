@@ -19,9 +19,14 @@ if (isset($_SESSION['email'])) {
 
             //Controle of alles is ingevuld
             $error = NULL;
-            if (empty($_POST['naam'])) {$error .= "<li>Naam</li>";}
-            if (empty($_POST['merk'])) {$error .= "<li>Merk</li>";}
-            if (empty($_POST['type'])) {$error .= "<li>Type</li>";}
+            
+           for($i = 0; $i < 24;$i++) {
+                if(!is_numeric($_POST[$i])){
+                    if(!empty($_POST[$i])){
+                        $error .= "<li>$_POST[$i] is not nummeric</li>";
+                    }
+                }
+           }
 
             if (!empty($error)) {
 
@@ -33,13 +38,19 @@ if (isset($_SESSION['email'])) {
 
             }else {
 
-                    $naam = mysqli_real_escape_string($con,$_POST['naam']);
-                    $merk = mysqli_real_escape_string($con,$_POST['merk']);
-                    $type = mysqli_real_escape_string($con,$_POST['type']);
+                while($row = mysqli_fetch_assoc($valicationcheck)) {
+                    $app_hhid = $row['id'];
+                }
+                for($i = 0; $i < 24;$i++) {
+                    $value = mysqli_real_escape_string($con,$_POST[$i]);
                     
+                    $timestamp = $i ."0000";
 
-                    $insertapparaten = "INSERT INTO apparaat (naam, merk, type) VALUES ('$naam','$merk','$type')";
-                    mysqli_query($con,$insertapparaten);
+                    $meting = "INSERT INTO meting (app_hh, tijd, waarde) VALUES ($app_hhid,$timestamp,$value)";
+                    mysqli_query($con,$meting);
+                }
+
+                    
                     
                     $lastid = mysqli_insert_id($con);
                     while($row = mysqli_fetch_assoc($huishoudenid)) {
@@ -67,9 +78,9 @@ if (isset($_SESSION['email'])) {
                     $time = sprintf("%02d", $i);
                     
                     echo '<div class="form-group">';
-                    echo '<label class="col-sm-1 control-label" for="'.$time.'">'.$time.':00</label>';
+                    echo '<label class="col-sm-1 control-label" for="'.$i.'">'.$time.':00</label>';
                     echo '<div class="col-sm-2">';
-                    echo '<input type="text" class="form-control" name="'.$time.'" value=""/>';
+                    echo '<input type="text" class="form-control" name="'.$i.'" value=""/>';
                     echo '</div>';
                     echo '<div class="col-sm-2">';
                     echo 'Kw';
