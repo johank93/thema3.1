@@ -5,9 +5,10 @@
     </div>
     <div>
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
+        <li class="active"><a href="?p=home">Home</a></li>
+        <li><a href="?p=login">Login</a></li>
         <li><a href="?p=registreren">Registreren</a></li>
-        <li><a href="?p=apparaat">Apperaatbeheer</a></li>
+        <li><a href="?p=apparaat">Apparaatbeheer</a></li>
         <li><a href="#">Overzicht</a></li>
       </ul>
     </div>
