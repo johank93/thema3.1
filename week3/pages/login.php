@@ -38,17 +38,17 @@ if (!empty($_POST)) {
     }
 }
 ?>
-<h2>Inloggen</h2>
 <form class="form-horizontal" method="POST">
+    <legend>Inloggen</legend>
     <div class="form-group">
         <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-        <div class="col-sm-10">
+        <div class="col-sm-4">
             <input type="email" class="form-control" name="email" id="inputEmail3" placeholder="Email" value="<?php if (isset($_POST['email'])) {echo $_POST['email'];} ?>">
         </div>
     </div>
     <div class="form-group">
         <label for="inputPassword3" class="col-sm-2 control-label">Wachtwoord</label>
-        <div class="col-sm-10">
+        <div class="col-sm-4">
             <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Wachtwoord">
         </div>
     </div>
