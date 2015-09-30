@@ -31,7 +31,7 @@ $result = $mysqli->query($sql) or die($mysqli->error);
                         echo"<tr>";
                             echo"<td><a href='?p=apparaat_meting&id=".$row['id']."'>".$row['naam']."</a></td>";
                             echo"<td>".$row['merk']."</td>";
-                            echo"<td>".$row['typenummer']."</td>";
+                            echo"<td>".$row['type']."</td>";
                         echo"</tr>";
                     }
 		?>
