@@ -5,7 +5,7 @@ if (!isset($_SESSION['huishouden_id'])) {
     echo '<meta http-equiv="refresh" content="0;URL=?p=login" />';     
 }
 
-$sql = "SELECT apparaat.id AS id, naam, typenummer, merk "
+$sql = "SELECT apparaat.id AS id, naam, type, merk "
         . "FROM apparaat "
         . "LEFT JOIN apparaat_huishouden ON apparaat.id = apparaat_huishouden.apparaat_fk "
         . "WHERE apparaat_huishouden.huishouden_fk = " . $_SESSION['huishouden_id'];
