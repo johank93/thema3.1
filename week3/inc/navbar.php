@@ -5,11 +5,11 @@
     </div>
     <div>
       <ul class="nav navbar-nav">
-        <li class="active"><a href="?p=home">Home</a></li>
-        <li><a href="?p=login">Login</a></li>
-        <li><a href="?p=registreren">Registreren</a></li>
-        <li><a href="?p=apparaat">Apparaatbeheer</a></li>
-        <li><a href="#">Overzicht</a></li>
+        <li <?php if (isset($_GET['p'])) { if ($_GET['p'] == "home") echo " class='active'"; } else echo " class='active'"; ?>><a href="?p=home">Home</a></li>
+        <li <?php if (isset($_GET['p'])) { if ($_GET['p'] == "login") echo " class='active'"; } ?>><a href="?p=login">Login</a></li>
+        <li <?php if (isset($_GET['p'])) { if ($_GET['p'] == "registreren") echo " class='active'"; } ?>><a href="?p=registreren">Registreren</a></li>
+        <li <?php if (isset($_GET['p'])) { if ($_GET['p'] == "apparaat") echo " class='active'"; } ?>><a href="?p=apparaat">Apparaatbeheer</a></li>
+        <li <?php if (isset($_GET['p'])) { if ($_GET['p'] == "overzicht") echo " class='active'"; } ?>><a href="#">Overzicht</a></li>
       </ul>
     </div>
   </div>
