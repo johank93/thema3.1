@@ -1,16 +1,22 @@
 <?php
 require('inc/connection.php');
-$con = $GLOBALS['con'];
 
-$_SESSION['email'] = "fabiangroenewold@gmail.com";
-    	if (isset($_SESSION['email'])) {
-            $email = $_SESSION['email'];
-            $huishoudenidsql = "SELECT id FROM huishouden WHERE email = '$email'";
-            
-            $huishoudenid = mysqli_query($con, $huishoudenidsql);
-            
+if (!isset($_SESSION['huishouden_id'])) {
+    echo '<meta http-equiv="refresh" content="0;URL=?p=login" />';     
+}
+
+$sql = "SELECT apparaat.id AS id, naam, typenummer, merk "
+        . "FROM apparaat "
+        . "LEFT JOIN apparaat_huishouden ON apparaat.id = apparaat_huishouden.apparaat_fk "
+        . "WHERE apparaat_huishouden.huishouden_fk = " . $_SESSION['huishouden_id'];
+
+$result = $mysqli->query($sql) or die($mysqli->error);
+
 ?>
         <a class="btn btn-default" href="?p=apparaat_toevoegen" role="button">Apparaat toevoegen</a><br /><br />
+<?php 
+    if ($result->num_rows > 0) {
+?>
         <table class='table table-condensed table-bordered dataTable' cellspacing=0>
 		<thead>
 			<tr>
@@ -20,35 +26,22 @@ $_SESSION['email'] = "fabiangroenewold@gmail.com";
 			</tr>
 		</thead>
 		<tbody id='myTable'>
-		
 		<?php
-                
-                    while($row = mysqli_fetch_assoc($huishoudenid)) {
-                        $sql = "SELECT apparaat.id AS id, naam, type, merk FROM apparaat 
-                                LEFT JOIN apparaat_huishouden
-                                ON apparaat.id = apparaat_huishouden.apparaat_fk
-                                WHERE apparaat_huishouden.huishouden_fk = $row[id]
-                                ";
-                    }
-                    $res = mysqli_query($con, $sql);
-                    if(isset($res)){
-                        while($row = mysqli_fetch_assoc($res)) {
-
-                            echo"<tr>";
-                                echo"<td><a href='?p=apparaat_meting&id=".$row['id']."'>".$row['naam']."</a></td>";
-                                echo"<td>".$row['merk']."</td>";
-                                echo"<td>".$row['type']."</td>";
-                            echo"</tr>";
-                        }
+                    while ($row = $result->fetch_assoc()) {
+                        echo"<tr>";
+                            echo"<td><a href='?p=apparaat_meting&id=".$row['id']."'>".$row['naam']."</a></td>";
+                            echo"<td>".$row['merk']."</td>";
+                            echo"<td>".$row['typenummer']."</td>";
+                        echo"</tr>";
                     }
 		?>
+                </tbody>
         </table>
-		
-        
-<?php
-    }else{
-        header('Location: ?p=registreren'); 
-        echo "nosession";
-            
+ <?php 
     }
-
+    else {
+        echo "<div class='alert alert-info'>";
+        echo "<strong>U heeft nog geen apparaten ingevoerd</strong><br />";
+        echo "Klik op 'Aparaat toevoegen' om een apparaat in te voeren";
+        echo "</div>";
+    }
