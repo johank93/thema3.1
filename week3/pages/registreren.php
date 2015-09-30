@@ -58,50 +58,47 @@ if(!empty($_POST)) {
 
 ?>
 
-    <form method="POST">
-       <fieldset>
-           <legend>Registratie</legend>
-
-           <table>
-
-       
-       
-       <tr>
-        <td>Postcode</td>
-        <td><input type="text" class="form-control" name="postcode" size="20" value="<?php if(isset($_POST['postcode'])) {echo $_POST['postcode'];}?>"></td>
-       </tr>
-       
-       <tr>
-        <td width="150px">Huisnummer</td>
-        <td><input type="text" class="form-control" name="huisnr" size="20" value="<?php if(isset($_POST['huisnr'])) {echo $_POST['huisnr'];}?>"></td>
-       </tr>
-       
-       <tr>
-        <td width="150px">Aantal inwonende</td>
-        <td><input type="text" class="form-control" name="grootte" size="20" value="<?php if(isset($_POST['grootte'])) {echo $_POST['grootte'];}?>"></td>
-       </tr>
-
-       <tr>
-        <td>Telefoonnummer</td>
-        <td><input type="text" class="form-control" maxlength=10 name="tel" value="<?php if(isset($_POST['tel'])) {echo $_POST['tel'];}?>"></td>
-       </tr>
-       
-       <tr>
-        <td>Email</td>
-        <td><input type="text" class="form-control" name="email" size="20" value="<?php if(isset($_POST['email'])) {echo $_POST['email'];}?>"></td>
-       </tr>
-       
-       <tr>
-        <td>Wachtwoord</td>
-        <td><input type="password" class="form-control" name="passwd" size="20"></td>
-       </tr>
-       
-       </table>
-       </fieldset><br/>
-
-       <input type="submit" class="btn btn-default" value="Registreer"/>
-
-
-
-       </fieldset>
-    </form>
+<form class="form-horizontal" method="POST">
+    <legend>Registratie</legend>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Postcode</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" name="postcode" id="inputPostcode3" placeholder="Postcode" value="<?php if (isset($_POST['postcode'])) {echo $_POST['postcode'];} ?>">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Huisnummer</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" name="huisnr" id="inputHuisnummer3" placeholder="Huisnummer" value="<?php if (isset($_POST['huisnr'])) {echo $_POST['huisnr'];} ?>">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Aantal inwonende</label>
+        <div class="col-sm-2">
+            <input type="number" class="form-control" name="grootte" id="inputGrootte3" placeholder="Aantal inwonende" value="<?php if (isset($_POST['grootte'])) {echo $_POST['grootte'];} ?>">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Telefoonnummer</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" name="tel" maxlength=12 id="inputTelefoonnummer3" placeholder="Telefoonnummer" value="<?php if (isset($_POST['tel'])) {echo $_POST['tel'];} ?>">
+        </div>
+    </div>        
+    <div class="form-group">
+        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-4">
+            <input type="email" class="form-control" name="email" id="inputEmail3" placeholder="Email" value="<?php if (isset($_POST['email'])) {echo $_POST['email'];} ?>">
+        </div>
+    </div>     
+    <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">Wachtwoord</label>
+        <div class="col-sm-4">
+            <input type="password" name="passwd" class="form-control" id="inputPassword3" placeholder="Wachtwoord">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Registreer</button>
+        </div>
+    </div>
+</form>
