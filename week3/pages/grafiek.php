@@ -1,6 +1,12 @@
 <canvas id="myChart" width="400" height="200"></canvas>
 <script>
 
+    <?php $_SESSION['huishouden_id'] = 159; ?>
+    $.get("/inc/household-information.php?household_id=" + <?php echo $_SESSION['huishouden_id'] ?>, function(data) {
+        var json = JSON.decode(data);
+        console.log(json);
+    });
+
     $.get("/inc/device-information.php?device=HAHA8000&comparison_type=1&region_type=1", function(data) {
 
         var json = JSON.decode(data);
