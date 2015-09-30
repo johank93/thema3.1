@@ -87,11 +87,24 @@ if (isset($_SESSION['email'])) {
     
         
 ?>
-<form class="form-horizontal" action="" method="POST">
+<from class="form-inline" action="" method="POST">
     <fieldset>
-           <legend>Meting toevoegen</legend>
+        <legend>Meting toevoegen</legend>
+        <div class="form-group">
+           <div class="col-sm-2">
+               <input type="text" class="form-control" name="date" value=""/>
+           </div>
+       </div>
+       <button type="submit" name="submit" class="btn">GO!</button>
+    </fieldset>
+</from>
+<br>
+
+
+<form class="form-horizontal" action="" method="POST">
+
     
-           <?php
+                      <?php
                     for($i = 0; $i < 24;$i++) {
                         $time = sprintf("%02d", $i);
                         $set = false;
@@ -124,7 +137,6 @@ if (isset($_SESSION['email'])) {
                         <input type='button' class='btn' onclick="location.href='?p=apparaat';" value='Annuleren' />
                 </div>
         </div>
-    </fieldset>
 </form>
 
 
