@@ -8,12 +8,17 @@ if (isset($_SESSION['email'])) {
         
         $huishoudenid = mysqli_query($con, $huishoudenidsql);
         while($row = mysqli_fetch_assoc($huishoudenid)) {
-            $valicationchecksql = "SELECT * FROM apparaat_huishouden WHERE apparaat_fk = $_GET[id] AND huishouden_fk = $row[id]";
+            $apparaat_huishoudenselectsql = "SELECT * FROM apparaat_huishouden WHERE apparaat_fk = $_GET[id] AND huishouden_fk = $row[id]";
+        }
+         
+        $apparaat_huishoudenselect = mysqli_query($con,$apparaat_huishoudenselectsql);
+        
+        while($row = mysqli_fetch_assoc($apparaat_huishoudenselect)) {
+            $allmetingensql = "SELECT * FROM meting WHERE app_hh = $row[id]";
+            $app_hhid = $row['id'];
         }
         
-        $valicationcheck = mysqli_query($con,$valicationchecksql);
-        
-        if(mysqli_num_rows($valicationcheck) >= 1){
+        if(mysqli_num_rows($apparaat_huishoudenselect) >= 1){
             
         if(!empty($_POST)) {
 
@@ -38,15 +43,25 @@ if (isset($_SESSION['email'])) {
 
             }else {
 
-                while($row = mysqli_fetch_assoc($valicationcheck)) {
-                    $app_hhid = $row['id'];
-                }
+                
                 for($i = 0; $i < 24;$i++) {
                     $value = mysqli_real_escape_string($con,$_POST[$i]);
                     
-                    $timestamp = $i ."0000";
-
-                    $meting = "INSERT INTO meting (app_hh, tijd, waarde) VALUES ($app_hhid,$timestamp,$value)";
+                    $timestamp = $i * 10000;
+                    $oldvalue = null;
+                    $allmetingen = mysqli_query($con,$allmetingensql);
+                    while($row = mysqli_fetch_array($allmetingen)) {
+                        if(($row['tijd']/1) == $i && $row['app_hh'] == $app_hhid){
+                            $oldvalue = $row['waarde'];
+                        }
+                    }
+                    
+                    if(!isset($oldvalue)){
+                        $meting = "INSERT INTO meting (app_hh, tijd, waarde) VALUES ($app_hhid,$timestamp,$value)";
+                    }else{
+                        $meting = "UPDATE meting SET waarde = $value WHERE app_hh = $app_hhid AND tijd = $timestamp";
+                    }
+                    
                     mysqli_query($con,$meting);
                 }
 
@@ -66,7 +81,10 @@ if (isset($_SESSION['email'])) {
                     echo "<b></b>";
 
             }
-    }           
+    }
+    
+    
+    
         
 ?>
 <form class="form-horizontal" action="" method="POST">
@@ -74,19 +92,29 @@ if (isset($_SESSION['email'])) {
            <legend>Meting toevoegen</legend>
     
            <?php
-                for($i = 0; $i < 24;$i++) {
-                    $time = sprintf("%02d", $i);
-                    
-                    echo '<div class="form-group">';
-                    echo '<label class="col-sm-1 control-label" for="'.$i.'">'.$time.':00</label>';
-                    echo '<div class="col-sm-2">';
-                    echo '<input type="text" class="form-control" name="'.$i.'" value=""/>';
-                    echo '</div>';
-                    echo '<div class="col-sm-2">';
-                    echo 'Kw';
-                    echo '</div>';
-                    echo '</div>';
-                }
+                    for($i = 0; $i < 24;$i++) {
+                        $time = sprintf("%02d", $i);
+                        $set = false;
+                        echo '<div class="form-group">';
+                        echo '<label class="col-sm-1 control-label" for="'.$i.'">'.$time.':00</label>';
+                        echo '<div class="col-sm-2">';
+                        $allmetingen = mysqli_query($con,$allmetingensql);
+                        while($row = mysqli_fetch_array($allmetingen)) {
+                            if(($row['tijd']/1) == $i){
+                                echo '<input type="text" class="form-control" name="'.$i.'" value="'.$row['waarde'].'"/>';
+                                $set = true;
+                            }
+                        }
+                        if($set == false){
+                            echo '<input type="text" class="form-control" name="'.$i.'" value=""/>';
+                        }
+                        echo '</div>';
+                        echo '<div class="col-sm-2">';
+                        echo 'Kw';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                
            
            ?> 
         <div class="control-group">
