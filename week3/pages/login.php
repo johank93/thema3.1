@@ -27,6 +27,7 @@ if (!empty($_POST)) {
             while ($row = $result->fetch_row()) {
                 $_SESSION['huishouden_id'] = $row[0];
             }
+            echo '<meta http-equiv="refresh" content="0;URL=?p=home" />';
         }
     }
     if (!empty($error)) {
