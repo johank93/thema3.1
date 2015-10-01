@@ -16,7 +16,7 @@ while ($row = $apparaat_huishoudens->fetch_assoc()) {
 if ($apparaat_huishoudens->num_rows >= 1) {
 
     if (!empty($_POST)) {
-
+        
         //Controle of alles is ingevuld
         $error = NULL;
 
@@ -25,6 +25,12 @@ if ($apparaat_huishoudens->num_rows >= 1) {
                 if (!empty($_POST[$i])) {
                     $error .= "<li>$_POST[$i] is not nummeric</li>";
                 }
+            }
+        }
+        
+        for ($i = 0; $i < 24; $i++) {
+            if (empty($_POST[$i])) {
+                $_POST[$i] = 0;
             }
         }
 
@@ -38,7 +44,7 @@ if ($apparaat_huishoudens->num_rows >= 1) {
         } else {
 
             for ($i = 0; $i < 24; $i++) {
-                $value = mysqli_real_escape_string($con, $_POST[$i]);
+                $value = $_POST[$i];
 
                 $timestamp = $i * 10000;
                 $oldvalue = null;
@@ -51,11 +57,12 @@ if ($apparaat_huishoudens->num_rows >= 1) {
 
                 if (!isset($oldvalue)) {
                     $meting = "INSERT INTO meting (app_hh, tijd, waarde) VALUES ($app_hhid,$timestamp,$value)";
-                } else {
-                    $meting = "UPDATE meting SET waarde = $value WHERE app_hh = $app_hhid AND tijd = $timestamp";
+                } elseif($value == ''){
+                    $meting = "DELETE FROM meting WHERE app_hh = $app_hhid AND tijd = $timestamp"; 
+                }else{
+                        $meting = "UPDATE meting SET waarde = $value WHERE app_hh = $app_hhid AND tijd = $timestamp";
                 }
-
-                $mysqli->query($meting) or die($mysqli->error);
+                mysqli_query($mysqli,$meting);
             }
 
             echo "<div class='alert alert-success'>";

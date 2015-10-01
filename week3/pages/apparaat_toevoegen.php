@@ -23,17 +23,19 @@ if (!empty($_POST)) {
         echo "<ul class='errors'>" . $error . "</ul>";
         echo "</div>";
     } else {
-
-        $naam = mysqli_real_escape_string($con, $_POST['naam']);
-        $merk = mysqli_real_escape_string($con, $_POST['merk']);
-        $type = mysqli_real_escape_string($con, $_POST['type']);
-
+//        $naam->real_escape_string($_POST['naam']);
+//        $merk->real_escape_string($_POST['merk']);
+//        $type->real_escape_string($_POST['type']);
+        
+        $naam = $_POST['naam'];
+        $merk = $_POST['merk'];
+        $type = $_POST['type'];
 
         $insertapparaten = "INSERT INTO apparaat (naam, merk, type) VALUES ('$naam','$merk','$type')";
         $mysqli->query($insertapparaten) or die($mysqli->error);
 
         $lastid = $mysqli->insert_id;
-        $insertquery = "INSERT INTO apparaat_huishouden (huishouden_fk, apparaat_fk) VALUES (" . $row['id'] . ", ". $lastid . ")";
+        $insertquery = "INSERT INTO apparaat_huishouden (huishouden_fk, apparaat_fk) VALUES (" . $_SESSION['huishouden_id'] . ", ". $lastid . ")";
         $mysqli->query($insertquery) or die($mysqli->error);
 
         echo "<div class='alert alert-success'>";
