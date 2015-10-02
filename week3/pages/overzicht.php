@@ -25,7 +25,7 @@ if (!empty($_POST)) {
             $curdate=strtotime(date("Y/m/d"));
 
             if ($newdate > $curdate) {
-                    $error .= "<li>Je kunt geen datum in het toekomst opgeven!</li>";
+                    $error .= "<li>Je kunt niet in het toekomst kijken xD</li>";
                 }
         }else{
             $error .= "<li>Datum moet nummeriek zijn!</li>";
