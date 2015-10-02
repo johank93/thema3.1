@@ -223,6 +223,7 @@ if (isset($_GET['id'])) {
     
         $.get("/inc/device-information.php?device_id=" + <?php echo $_GET['id'] ?> + "&comparison_type="+comparison_type+"&region_type="+region_type, function(data) {
 
+            var maxLegendaValue = 0;
             var json = JSON.decode(data);
 
             var labels = [];
@@ -232,8 +233,10 @@ if (isset($_GET['id'])) {
             for (var i = 0; i < json.length; i++) {
                 var obj = json[i];
                 labels[i] = obj.tijd.substring(0, 5);
-                //valuesAVG[i] = parseFloat(obj.gemiddeldewaarde);
                 valuesMine[i] = parseFloat(obj.gemiddeldewaarde);
+                if (maxLegendaValue < parseFloat(obj.gemiddeldewaarde)) {
+                    maxLegendaValue = parseFloat(obj.gemiddeldewaarde);
+                }
             }
             labels.reverse();
             //valuesAVG.reverse();
@@ -248,6 +251,9 @@ if (isset($_GET['id'])) {
                 for (var i = 0; i < json.length; i++) {
                     var obj = json[i];
                     valuesAVG[i] = parseFloat(obj.gemiddeldewaarde);
+                    if (maxLegendaValue < parseFloat(obj.gemiddeldewaarde)) {
+                        maxLegendaValue = parseFloat(obj.gemiddeldewaarde);
+                    }
                 }
                 valuesAVG.reverse();
 
@@ -255,7 +261,7 @@ if (isset($_GET['id'])) {
                 var options = {
                     scaleOverride : true,
                     scaleSteps : 5,
-                    scaleStepWidth : 5,
+                    scaleStepWidth : ((maxLegendaValue)+parseFloat(1))/5,
                     scaleStartValue : 0 ,
                     ///Boolean - Whether grid lines are shown across the chart
                     scaleShowGridLines: true,
