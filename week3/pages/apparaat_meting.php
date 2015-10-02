@@ -11,7 +11,10 @@ $monthselect = date("m");
 $yearselect = date("Y");
 
 if (isset($_GET['id'])) {
-    $apparaat_huishoudenselectsql = "SELECT * FROM apparaat_huishouden WHERE apparaat_fk = " . $_GET['id'] . " AND huishouden_fk = " . $_SESSION['huishouden_id'];
+    $apparaat_huishoudenselectsql = "SELECT * 
+                                    FROM apparaat_huishouden 
+                                    WHERE apparaat_fk = " . $_GET['id'] . " 
+                                    AND huishouden_fk = " . $_SESSION['huishouden_id'];
     $apparaat_huishoudens = $mysqli->query($apparaat_huishoudenselectsql) or die($mysqli->error);
 
     while ($row = $apparaat_huishoudens->fetch_assoc()) {
