@@ -44,21 +44,38 @@ if (!empty($_POST)) {
 
 
 $datesqlformat = $yearselect.$monthselect.$dayselect;
-$sql = "SELECT tijd, waarde, naam, apparaat.id AS appid 
-    FROM meting 
-    LEFT JOIN apparaat_huishouden 
-    ON meting.app_hh = apparaat_huishouden.id 
-    LEFT JOIN apparaat
-    ON apparaat_huishouden.apparaat_fk = apparaat.id 
-    WHERE apparaat_huishouden.huishouden_fk = " . $_SESSION['huishouden_id'] . "
-    AND datum = $datesqlformat  
-    ORDER BY tijd    
-    ";
+if (checkAuthorization(0)) {
+    $sql = "SELECT datum,tijd, AVG(waarde) as waarde, naam, apparaat.id AS appid 
+        FROM meting 
+        LEFT JOIN apparaat_huishouden 
+        ON meting.app_hh = apparaat_huishouden.id 
+        LEFT JOIN apparaat
+        ON apparaat_huishouden.apparaat_fk = apparaat.id 
+        WHERE datum = $datesqlformat  
+        GROUP BY apparaat.id,datum,tijd
+        ORDER BY datum,tijd    
+        ";
 
-$sql2 = "SELECT apparaat.id AS appid, naam, type, merk "
-        . "FROM apparaat "
-        . "LEFT JOIN apparaat_huishouden ON apparaat.id = apparaat_huishouden.apparaat_fk "
-        . "WHERE apparaat_huishouden.huishouden_fk = " . $_SESSION['huishouden_id'];
+    $sql2 = "SELECT apparaat.id AS appid, naam, type, merk "
+            . "FROM apparaat ";
+}
+else {
+    $sql = "SELECT tijd, waarde, naam, apparaat.id AS appid 
+        FROM meting 
+        LEFT JOIN apparaat_huishouden 
+        ON meting.app_hh = apparaat_huishouden.id 
+        LEFT JOIN apparaat
+        ON apparaat_huishouden.apparaat_fk = apparaat.id 
+        WHERE apparaat_huishouden.huishouden_fk = " . $_SESSION['huishouden_id'] . "
+        AND datum = $datesqlformat  
+        ORDER BY tijd    
+        ";
+
+    $sql2 = "SELECT apparaat.id AS appid, naam, type, merk "
+            . "FROM apparaat "
+            . "LEFT JOIN apparaat_huishouden ON apparaat.id = apparaat_huishouden.apparaat_fk "
+            . "WHERE apparaat_huishouden.huishouden_fk = " . $_SESSION['huishouden_id'];
+}
 
 $result = $mysqli->query($sql) or die($mysqli->error);
 $result2 = $mysqli->query($sql2) or die($mysqli->error);

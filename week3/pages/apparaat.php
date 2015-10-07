@@ -2,19 +2,25 @@
 require('inc/connection.php');
 
 if (!isset($_SESSION['huishouden_id'])) {
-    echo '<meta http-equiv="refresh" content="0;URL=?p=login" />';     
+    $sql = "SELECT apparaat.id AS id, naam, type, merk "
+            . "FROM apparaat";
+} else {
+    if ($_SESSION['type_id'] == 0) {
+        $sql = "SELECT apparaat.id AS id, naam, type, merk "
+                . "FROM apparaat";
+    } else {
+        $sql = "SELECT apparaat.id AS id, naam, type, merk "
+                . "FROM apparaat "
+                . "LEFT JOIN apparaat_huishouden ON apparaat.id = apparaat_huishouden.apparaat_fk "
+                . "WHERE apparaat_huishouden.huishouden_fk = " . $_SESSION['huishouden_id'];
+    }
 }
-
-$sql = "SELECT apparaat.id AS id, naam, type, merk "
-        . "FROM apparaat "
-        . "LEFT JOIN apparaat_huishouden ON apparaat.id = apparaat_huishouden.apparaat_fk "
-        . "WHERE apparaat_huishouden.huishouden_fk = " . $_SESSION['huishouden_id'];
-
 $result = $mysqli->query($sql) or die($mysqli->error);
-
+if (isset($_SESSION['type_id']) && $_SESSION['type_id'] <= 1) {
 ?>
         <a class="btn btn-default" href="?p=apparaat_toevoegen" role="button">Apparaat toevoegen</a><br /><br />
 <?php 
+}
     if ($result->num_rows > 0) {
 ?>
         <table class='table table-condensed table-bordered dataTable' cellspacing=0>

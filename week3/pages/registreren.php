@@ -3,59 +3,95 @@ require('inc/connection.php');
 $con = $GLOBALS['con'];
 
 
-if(!empty($_POST)) {
+if (!empty($_POST)) {
 
-		//Controle of alles is ingevuld
-		$error = NULL;
-		if (empty($_POST['grootte'])) {$error .= "<li>Aantal inwoners</li>";}
-		if (empty($_POST['postcode'])) {$error .= "<li>Postcode</li>";}
-		if (empty($_POST['huisnr'])) {$error .= "<li>Huisnummer</li>";}
-                if (empty($_POST['tel'])) {$error .= "<li>Tel</li>";}
-                if (empty($_POST['email'])) {$error .= "<li>Email</li>";}
-                if (empty($_POST['passwd'])) {  $error .= "<li>Wachtwoord is nog niet ingevuld</li>";}
-                
-                if (!validateEmail($_POST['email'])) {  $error .= "<li>E-mail is ongeldig</li>";}
-                if(!preg_match('/^[0-9\-]{10,11}$/', $_POST['tel']) AND (!empty($_POST['tel']))) { $error .= "<li>Ongeldig telefoonnummer</li>";}
-                
-		if (!empty($error)) {
-			
-			echo "<div class='alert alert-danger'>";
-			echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
-			echo "<strong>Er zijn enkele verplichte velden niet (correct) ingevuld!</strong><br /><br>";
-			echo "<ul class='errors'>" . $error . "</ul>";
-			echo "</div>";
-                        
-		}else {
-		
-			$postcode = mysqli_real_escape_string($con,$_POST['postcode']);
-			$huisnr = mysqli_real_escape_string($con,$_POST['huisnr']);
-			$grootte = mysqli_real_escape_string($con,$_POST['grootte']);
-			$tel = mysqli_real_escape_string($con,$_POST['tel']);
-                        $email = mysqli_real_escape_string($con,$_POST['email']);
-                        $passwd = mysqli_real_escape_string($con,$_POST['passwd']);
-                        
-                        $passwd = sha1($_POST['passwd']);
-                        
-                        $sql = "INSERT INTO huishouden (postcode, huisnummer, grootte, telnummer, email, wachtwoord) VALUES ('$postcode','$huisnr','$grootte','$tel','$email','$passwd')";
-                        mysqli_query($con,$sql);
-                        
-                        echo "<div class='alert alert-success'>";
-			echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
-			echo "<strong>Je bent succesvol geregistreerd!</strong><br /><br>";
-			echo "</div>";
-                        
-                        echo "<b></b>";
-                        
-                        $_SESSION['email'] = $_POST['email'];
-                        
-                        header('Location: ?p=apparaat');
-                        
-		}
-	}
+    //Controle of alles is ingevuld
+    $error = NULL;
+    if (empty($_POST['grootte'])) {
+        $error .= "<li>Aantal inwoners</li>";
+    }
+    if (empty($_POST['postcode'])) {
+        $error .= "<li>Postcode</li>";
+    }
+    if (empty($_POST['huisnr'])) {
+        $error .= "<li>Huisnummer</li>";
+    }
+    if (empty($_POST['tel'])) {
+        $error .= "<li>Tel</li>";
+    }
+    if (empty($_POST['email'])) {
+        $error .= "<li>Email</li>";
+    }
+    if (empty($_POST['passwd'])) {
+        $error .= "<li>Wachtwoord is nog niet ingevuld</li>";
+    }
 
-        
-        
+    if (!validateEmail($_POST['email'])) {
+        $error .= "<li>E-mail is ongeldig</li>";
+    }
+    if (!preg_match('/^[0-9\-]{10,11}$/', $_POST['tel']) AND ( !empty($_POST['tel']))) {
+        $error .= "<li>Ongeldig telefoonnummer</li>";
+    }
 
+    if (!empty($error)) {
+
+        echo "<div class='alert alert-danger'>";
+        echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+        echo "<strong>Er zijn enkele verplichte velden niet (correct) ingevuld!</strong><br /><br>";
+        echo "<ul class='errors'>" . $error . "</ul>";
+        echo "</div>";
+    } else {
+
+        $postcode = mysqli_real_escape_string($con, $_POST['postcode']);
+        $huisnr = mysqli_real_escape_string($con, $_POST['huisnr']);
+        $grootte = mysqli_real_escape_string($con, $_POST['grootte']);
+        $tel = mysqli_real_escape_string($con, $_POST['tel']);
+        $email = mysqli_real_escape_string($con, $_POST['email']);
+        $passwd = mysqli_real_escape_string($con, $_POST['passwd']);
+
+        $passwd = sha1($_POST['passwd']);
+
+        $succes = false;
+
+        $check_huishouden = $mysqli->query("SELECT * FROM huishouden WHERE postcode= '$postcode' and huisnummer = '$huisnr'") or die($mysqli->error);
+        $check_huishouden = $mysqli->query("SELECT * FROM huishouden WHERE postcode= '$postcode' and huisnummer = '$huisnr'") or die($mysqli->error);
+        if ($check_huishouden->num_rows == 0) {
+            $check_postcode = $mysqli->query("SELECT * FROM postcode WHERE postcode= '$postcode' and minnumber <= '$huisnr' AND maxnumber >= '$huisnr'") or die($mysqli->error);
+            if ($check_postcode->num_rows > 0) {
+
+
+                $sql = "INSERT INTO huishouden (postcode, huisnummer, grootte, telefoonnummer) VALUES ('$postcode','$huisnr','$grootte','$tel')";
+                $mysqli->query($sql) or die($mysqli->error);
+
+                $lastid = $mysqli->insert_id;
+
+                $mysqli->query("INSERT INTO gebruikers (email,wachtwoord,huishouden_id,type_id) VALUES ('$email', '$passwd', $lastid, 1)") or die($mysqli->error);
+
+                $_SESSION['huishouden_id'] = $lastid;
+                $_SESSION['type_id'] = 1;
+
+                $succes = true;
+            } else {
+                echo "<div class='alert alert-danger'>";
+                echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
+                echo "<strong>De ingevoerde postcode is nog niet beschikbaar voor metingen!</strong><br /><br>";
+                echo "</div>";
+            }
+        } else {
+            $row = $check_huishouden->fetch_row();
+            $id = $row[0];
+            $mysqli->query("INSERT INTO gebruikers (email,wachtwoord,huishouden_id,type_id) VALUES ('$email', '$passwd', $id, 2)") or die($mysqli->error);
+            $_SESSION['huishouden_id'] = $row[0];
+            $_SESSION['type_id'] = 2;
+            $succes = true;
+        }
+
+        if ($succes) {
+            $_SESSION['email'] = $_POST['email'];
+            header('Location: ?p=apparaat');
+        }
+    }
+}
 ?>
 
 <form class="form-horizontal" method="POST">

@@ -27,5 +27,16 @@ function validateEmail($email) {
   return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
+function checkAuthorization($type_id) {
+    if (isset($_SESSION['type_id'])) {
+        if ($type_id >= $_SESSION['type_id']) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
 //}
 ?>

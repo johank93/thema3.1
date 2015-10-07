@@ -26,7 +26,8 @@ if (isset($_GET['device_id']) && isset($_GET['comparison_type']) && isset($_GET[
         // same device kind
     }
     
-    $sql2 = "SELECT huishouden.id,huishouden.postcode,huisnummer,grootte,telefoonnummer,email,street,city,province "
+    if (isset($_SESSION['huishouden_id'])) {
+    $sql2 = "SELECT huishouden.id,huishouden.postcode,huisnummer,grootte,telefoonnummer,street,city,province "
             . "FROM huishouden "
             . "LEFT JOIN postcode on huishouden.postcode = postcode.postcode "
             . "WHERE huishouden.id = " . $_SESSION['huishouden_id'];
@@ -34,8 +35,8 @@ if (isset($_GET['device_id']) && isset($_GET['comparison_type']) && isset($_GET[
     $result2 = $mysqli->query($sql2) or die($mysqli->error);
     $data2 = $result2->fetch_row();
     
-    if ($data2[8] == "")
-        $data2[8] = "Groningen";
+    if ($data2[7] == "")
+        $data2[7] = "Groningen";
    
     $region_type = $_GET['region_type'];
     if ($region_type == "1") {
@@ -46,7 +47,11 @@ if (isset($_GET['device_id']) && isset($_GET['comparison_type']) && isset($_GET[
     else if ($region_type == "2") {
         // search on county
         // TODO: Replace with current household county
-        $sql .= " AND postcode.province = '" . $data2[8] . "'";
+        $sql .= " AND postcode.province = '" . $data2[7] . "'";
+    }
+    }
+    else {
+        $sql .= " AND postcode.province = 'Groningen'";
     }
     
     // GROUP BY

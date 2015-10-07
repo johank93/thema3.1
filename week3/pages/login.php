@@ -17,7 +17,7 @@ if (!empty($_POST)) {
         $email = mysql_real_escape_string($_POST['email']);
         $wachtwoord = sha1($_POST['password']);
 
-        $result = $mysqli->query("SELECT * FROM huishouden WHERE email = '" . $email . "' AND wachtwoord = '" . $wachtwoord . "'") or die($mysqli->error);
+        $result = $mysqli->query("SELECT * FROM gebruikers WHERE email = '" . $email . "' AND wachtwoord = '" . $wachtwoord . "'") or die($mysqli->error);
 
 
         if ($result->num_rows == 0) {
@@ -25,7 +25,9 @@ if (!empty($_POST)) {
         } else {
             /* fetch object array */
             while ($row = $result->fetch_row()) {
-                $_SESSION['huishouden_id'] = $row[0];
+                $_SESSION['huishouden_id'] = $row[2];
+                $_SESSION['type_id'] = $row[3];
+                $_SESSION['email'] = $row[0];
             }
             echo '<meta http-equiv="refresh" content="0;URL=?p=home" />';
         }
