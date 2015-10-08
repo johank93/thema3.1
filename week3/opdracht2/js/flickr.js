@@ -33,7 +33,16 @@ function flickrPics() {
             var i = Math.floor(Math.random() * flickrdata.items.length);
             var item = flickrdata.items[i];
             var url = item.media.m;
-            $("#slide"+theNumber).html("<img src="+ url + "></img>");
+            
+            var mydate = new Date(item.date_taken);
+            var day = mydate.getDay();
+            var month = mydate.getMonth();
+            var year = mydate.getFullYear();
+            var str = day + '/' + month + '/' + year;
+            
+            $("#slide"+theNumber).html("<a href="+ url+" target='_blank' ><img src="+ url + "></a></img><br><b>Titel:</b>"+item.title+"<br><b>Date:</b>"+str+"");
             }); 
     }
+    
+    
 };
