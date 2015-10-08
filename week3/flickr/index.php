@@ -22,7 +22,7 @@ function getPicture(tags, cb) {
     var apiKey = "fa214b1215cd1a537018cfbdfa7fb9a6"; // replace this with your API key
 
     // get an array of random photos
-    $.getJSON(
+    var hoi = $.getJSON(
         "https://api.flickr.com/services/rest/?jsoncallback=?", {
             method: 'flickr.photos.search',
             tags: tags,
@@ -31,6 +31,8 @@ function getPicture(tags, cb) {
             nojsoncallback: 1,
             per_page: 10 // you can increase this to get a bigger array
         },
+        
+        
         function(data) {
 
             // if everything went good
@@ -56,12 +58,13 @@ function getPicture(tags, cb) {
                         }
                     }
                 );
-
+        
             } else {
                 console.log(" The request to get the array was not good :( ");
             }
         }
     );
+    alert(JSON.stringify(hoi));
 };
 
 getPicture('httyd', function(url) {

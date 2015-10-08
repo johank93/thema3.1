@@ -1,0 +1,3 @@
+#h_container { width: 200px; overflow: hidden; } 
+#h_wrapper { width: 600px; margin-left:0px; }
+.h_slide { width: 200px; height: 200px; overflow: hidden; float: left; }
